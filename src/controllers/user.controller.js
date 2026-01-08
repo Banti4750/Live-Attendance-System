@@ -53,10 +53,14 @@ export const loginControllers=async(req , res )=>{
     }
 }
 
-export const meControllers=(req , res )=>{
+export const meControllers= async (req , res )=>{
     try {
+        const id = req.user.userId;
 
+        const data = await userModel.findById(id).select({_id:true ,role:true , name:true , email:true })
+        return res.status(400).json({"success": true,data});
     } catch (error) {
-
+         console.error("Error in loginControllers:", error);
+        res.status(500).json({"success": false,"error":"Internal server error",});
     }
 }
